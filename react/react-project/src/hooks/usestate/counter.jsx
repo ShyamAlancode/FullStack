@@ -4,11 +4,13 @@ function Counter() {
   const [count, setCount] = useState(0);
 
   return (
-    <div style={{ textAlign: "center", marginTop: "40px" }}>
+    <div>
       <h2>Counter</h2>
-      <p style={{ fontSize: "48px", margin: "10px 0" }}>{count}</p>
-      <button onClick={() => setCount(count + 1)}>Increment</button>
-      <button onClick={() => setCount(count - 1)} style={{ margin: "0 10px" }}>Decrement</button>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>+ Add</button>
+      &nbsp;
+      <button onClick={() => setCount(count - 1)}>- Subtract</button>
+      &nbsp;
       <button onClick={() => setCount(0)}>Reset</button>
     </div>
   );

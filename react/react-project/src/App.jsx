@@ -1,6 +1,8 @@
 import Home from "./Home";
 import Navbar from "./Navbar";
 import Players from "./Players";
+import Counter from "./hooks/usestate/counter";
+import Score from "./hooks/usestate/score";
 
 const App = () => {
   let players = [
@@ -17,6 +19,10 @@ const App = () => {
         <Home />
         <h2>Indian Cricket Players</h2>
         <Players obj1={players} />
+        <hr />
+        <Counter />
+        <hr />
+        <Score />
       </div>
     </div>
   );
