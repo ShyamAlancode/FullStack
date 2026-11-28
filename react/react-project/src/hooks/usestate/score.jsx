@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 function Score() {
   const [runs, setRuns] = useState(0);
@@ -6,68 +6,61 @@ function Score() {
   const [balls, setBalls] = useState(0);
   const [extras, setExtras] = useState(0);
 
+  const isAllOut = wickets >= 10;
   const overs = Math.floor(balls / 6);
   const ballsInOver = balls % 6;
 
-  function addRuns(r) {
-    setRuns(runs + r);
-    setBalls(balls + 1);
-  }
+  const addRuns = (r) => {
+    if (isAllOut) return;
+    setRuns((prev) => prev + r);
+    setBalls((prev) => prev + 1);
+  };
 
-  function addWicket() {
-    if (wickets < 10) {
-      setWickets(wickets + 1);
-      setBalls(balls + 1);
+  const addWicket = () => {
+    if (isAllOut) return;
+    setWickets((prev) => prev + 1);
+    setBalls((prev) => prev + 1);
+  };
+
+  const addExtra = (type) => {
+    if (isAllOut) return;
+    setRuns((prev) => prev + 1);
+    setExtras((prev) => prev + 1);
+    if (type !== 'wide' && type !== 'noball') {
+      setBalls((prev) => prev + 1);
     }
-  }
+  };
 
-  function addExtra(type) {
-    if (type === "wide" || type === "noball") {
-      setRuns(runs + 1);
-      setExtras(extras + 1);
-    } else {
-      setExtras(extras + 1);
-      setBalls(balls + 1);
-    }
-  }
-
-  function reset() {
+  const reset = () => {
     setRuns(0);
     setWickets(0);
     setBalls(0);
     setExtras(0);
-  }
+  };
 
   return (
-    <div style={{ fontFamily: "monospace", maxWidth: "380px", margin: "30px auto" }}>
-      <h2 style={{ borderBottom: "1px solid black", paddingBottom: "6px" }}>Cricket Scoreboard</h2>
-
-      <p style={{ fontSize: "40px", margin: "10px 0" }}>{runs} / {wickets}</p>
+    <div style={{ fontFamily: 'monospace', maxWidth: '380px', margin: '30px auto' }}>
+      <h2 style={{ borderBottom: '1px solid black', paddingBottom: '6px' }}>Cricket Scoreboard</h2>
+      <p style={{ fontSize: '40px', margin: '10px 0' }}>{runs} / {wickets}</p>
       <p>Overs: {overs}.{ballsInOver}</p>
       <p>Extras: {extras}</p>
-
       <p><strong>Runs:</strong></p>
-      <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+      <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
         {[0, 1, 2, 3, 4, 6].map((r) => (
-          <button key={r} onClick={() => addRuns(r)}>{r}</button>
+          <button key={r} disabled={isAllOut} onClick={() => addRuns(r)}>{r}</button>
         ))}
-        <button onClick={addWicket}>Wicket</button>
+        <button disabled={isAllOut} onClick={addWicket}>Wicket</button>
       </div>
-
-      <p style={{ marginTop: "12px" }}><strong>Extras:</strong></p>
-      <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
-        <button onClick={() => addExtra("wide")}>Wide</button>
-        <button onClick={() => addExtra("noball")}>No Ball</button>
-        <button onClick={() => addExtra("bye")}>Bye</button>
-        <button onClick={() => addExtra("legbye")}>Leg Bye</button>
+      <p style={{ marginTop: '12px' }}><strong>Extras:</strong></p>
+      <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+        <button disabled={isAllOut} onClick={() => addExtra('wide')}>Wide</button>
+        <button disabled={isAllOut} onClick={() => addExtra('noball')}>No Ball</button>
+        <button disabled={isAllOut} onClick={() => addExtra('bye')}>Bye</button>
+        <button disabled={isAllOut} onClick={() => addExtra('legbye')}>Leg Bye</button>
       </div>
-
       <br />
       <button onClick={reset}>Reset Innings</button>
-
-      {wickets === 10 && (
-        <p style={{ marginTop: "12px" }}>All Out! Final Score: {runs}</p>
-      )}
+      {isAllOut && <p style={{ marginTop: '12px' }}>All Out! Final Score: {runs}</p>}
     </div>
   );
 }
